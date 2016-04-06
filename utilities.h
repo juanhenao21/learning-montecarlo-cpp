@@ -1,3 +1,8 @@
+
+#ifndef SYMBOL
+#define SYMBOL value
+
+// Print a vector of members of different structures
 template<typename T>
 std::ostream& operator << (std::ostream& os, std::vector<T>& v)
 {
@@ -8,6 +13,7 @@ std::ostream& operator << (std::ostream& os, std::vector<T>& v)
     return os;
 }
 
+// Order the links input data
 struct CompLink
 {
     bool operator() (const Link &a, const Link &b)
@@ -16,6 +22,7 @@ struct CompLink
     }
 };
 
+// Order the atoms input data
 struct CompAtom
 {
     bool operator() (const Atom &a, const Atom &b)
@@ -24,3 +31,4 @@ struct CompAtom
     }
 };
 
+#endif

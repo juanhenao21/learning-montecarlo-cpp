@@ -1,6 +1,13 @@
+#ifndef TYPES
+#define TYPES
+
 #include <string>
 #include <fstream>
 
+// ******************************************************************************
+// ******************************************************************************
+
+// Structures
 
 struct Atom
 {
@@ -37,38 +44,13 @@ struct Spin
 
 };
 
-
-std::ostream& operator << (std::ostream& os, Atom& a)
-{
-    os << "Atom: " << a.id << " of type: " << a.type;
-    return os;
-}
-
-std::ostream& operator << (std::ostream& os, Link& l)
-{
-    os << "Atom: " << l.source << " with atom: " << l.target << " with exchange " << l.exchange;
-    return os;
-}
-
-
-float operator* (const Spin& a, const Spin& b)
-{
-    return a.x * b.x + a.y * b.y + a.z * b.z;
-}
-
-std::ostream& operator<< (std::ostream& os, Spin& s)
-{
-    os << "(" << s.x << ", " << s.y << ", " << s.z << ")";
-    return os;
-}
-
 struct AtomsLinks {
 
     std::vector<Atom> atoms;
     std::vector<Link> links;
 
-    static AtomsLinks read_from_file (std::string filename) {
-
+    static AtomsLinks read_from_file (std::string filename) 
+    {
         std::vector<Atom> atoms;
         std::vector<Link> links;
         std::ifstream file_(filename.data());
@@ -81,7 +63,8 @@ struct AtomsLinks {
 
             file_ >> natoms >> nlinks >> ntypes >> _;
 
-            for (int i = 0; i < ntypes; ++i) {
+            for (int i = 0; i < ntypes; ++i) 
+            {
                 file_ >> type1;
             }
 
@@ -114,3 +97,35 @@ struct AtomsLinks {
         return al;
     }
 };
+
+// ******************************************************************************
+// ******************************************************************************
+
+// Operators
+
+std::ostream& operator<< (std::ostream& os, Atom& a)
+{
+    os << "Atom: " << a.id << " of type: " << a.type;
+    return os;
+}
+
+std::ostream& operator<< (std::ostream& os, Link& l)
+{
+    os << "Atom: " << l.source << " with atom: " << l.target << " with exchange " << l.exchange;
+    return os;
+}
+
+float operator* (const Spin& a, const Spin& b)
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+std::ostream& operator<< (std::ostream& os, Spin& s)
+{
+    os << "(" << s.x << ", " << s.y << ", " << s.z << ")";
+    return os;
+}
+
+std::vector<int> limitsNeighboorsInteractions (Link link);
+
+#endif
