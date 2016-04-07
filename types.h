@@ -48,7 +48,8 @@ struct Spin
 
 };
 
-struct AtomsLinks {
+struct AtomsLinks
+{
 
     std::vector<Atom> atoms;
     std::vector<Link> links;

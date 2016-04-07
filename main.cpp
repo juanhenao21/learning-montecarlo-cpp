@@ -7,9 +7,15 @@
 #include "types.h"
 #include "utilities.h"
 #include "limits.h"
+#include "energy.h"
 
 int main(int argc, char* argv[])
 {
+    if (argc < 2)
+    {
+    	std::cout << "Remember to specify the data file" << std::endl;
+    }
+
     // Data reading
     std::vector<Atom> atoms;
     std::vector<Link> links;
@@ -25,23 +31,12 @@ int main(int argc, char* argv[])
     // CSR (Compressed Sparse Row) representation
     // Neighboors, interactions and limits
     Link link;
-    std::vector<int> limits;
-
+    
     CSRMatrix csr = get_limits(links);
 
-    for (int i = 0; i < csr.limits.size(); ++i)
-    {
-        std::cout << csr.limits[i] << std::endl;
-    }
-
     // Energy calculation
-    // Spin sup = Spin::up();
-    // Spin sdown = Spin::down();
+    double Energy;
+	Energy = energy(atoms, csr);
 
-    // for (int i = 0; i < al.links.size(); ++i)
-    // {
-    //     Spin Up = Spin::up();
-    //     spinUp.push_back(Up);
-    // }
-
+	std::cout << "Energy = " << -Energy << std::endl;    
 }

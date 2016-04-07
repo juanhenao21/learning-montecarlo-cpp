@@ -8,7 +8,7 @@ CSRMatrix get_limits (const std::vector<Link>& links)
 
     std::vector<int> limits;
     std::vector<int> neighboors;
-    std::vector<float> interactions;
+    std::vector<float> exchanges;
 
     limits.push_back(n);
     for (int i = 0; i < links.size();)
@@ -18,7 +18,7 @@ CSRMatrix get_limits (const std::vector<Link>& links)
             n++;
             i++;
             neighboors.push_back(links[i].target);
-            interactions.push_back(links[i].exchange);
+            exchanges.push_back(links[i].exchange);
         }
         while (links[i].source == a);
 
@@ -26,5 +26,5 @@ CSRMatrix get_limits (const std::vector<Link>& links)
         limits.push_back(n);
     }
 
-    return CSRMatrix { limits, neighboors, interactions };
+    return CSRMatrix { limits, neighboors, exchanges };
 }
