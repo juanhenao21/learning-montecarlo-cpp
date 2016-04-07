@@ -1,32 +1,30 @@
-#include <iostream>
-#include <vector>
+#include "limits.h"
 
-std::vector<int> limitsNeighboorsInteractions (Link link)
+
+std::vector<int> get_limits (const std::vector<Link>& links)
 {
-	int a{0};
-	int n{0};
+    int a{0};
+    int n{0};
 
-	std::vector<int> limits;
-	std::vector<int> neighboors;
+    std::vector<int> limits;
+    std::vector<int> neighboors;
     std::vector<int> interactions;
 
-	limits.push_back(n);
-    for (int i = 0; i < link.size();)
+    limits.push_back(n);
+    for (int i = 0; i < links.size();)
     {
         do
         {
             n++;
             i++;
-            neighboors.push_back(link[i].target);
-            interactions.push_back(link[i].exchange);
-        } 
-        while (link[i].source == a);
+            neighboors.push_back(links[i].target);
+            interactions.push_back(links[i].exchange);
+        }
+        while (links[i].source == a);
 
         a += 1;
         limits.push_back(n);
-        std::cout << limits[i] << endl;
     }
 
     return limits;
-
 }

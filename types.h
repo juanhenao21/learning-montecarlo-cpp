@@ -3,6 +3,7 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 
 // ******************************************************************************
 // ******************************************************************************
@@ -30,13 +31,13 @@ struct Spin
 {
     public:
 
-        Spin(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
+        Spin(float _x, float _y, float _z);
 
         friend std::ostream& operator<< (std::ostream& os, Spin& s);
         friend float operator* (const Spin& a, const Spin& b);
 
-        static Spin up () { return Spin(0, 0, 1); }
-        static Spin down () { return Spin(0, 0, -1); }
+        static Spin up ();
+        static Spin down ();
 
     private:
 
@@ -49,7 +50,7 @@ struct AtomsLinks {
     std::vector<Atom> atoms;
     std::vector<Link> links;
 
-    static AtomsLinks read_from_file (std::string filename) 
+    static AtomsLinks read_from_file (std::string filename)
     {
         std::vector<Atom> atoms;
         std::vector<Link> links;
@@ -63,7 +64,7 @@ struct AtomsLinks {
 
             file_ >> natoms >> nlinks >> ntypes >> _;
 
-            for (int i = 0; i < ntypes; ++i) 
+            for (int i = 0; i < ntypes; ++i)
             {
                 file_ >> type1;
             }
@@ -125,7 +126,5 @@ std::ostream& operator<< (std::ostream& os, Spin& s)
     os << "(" << s.x << ", " << s.y << ", " << s.z << ")";
     return os;
 }
-
-std::vector<int> limitsNeighboorsInteractions (Link link);
 
 #endif

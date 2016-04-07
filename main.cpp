@@ -6,13 +6,14 @@
 
 #include "types.h"
 #include "utilities.h"
+#include "limits.h"
 
 int main(int argc, char* argv[])
 {
     // Data reading
     std::vector<Atom> atoms;
     std::vector<Link> links;
-    
+
     AtomsLinks al = AtomsLinks::read_from_file(argv[1]);
     atoms = al.atoms;
     links = al.links;
@@ -25,11 +26,8 @@ int main(int argc, char* argv[])
     // Neighboors, interactions and limits
     Link link;
     std::vector<int> limits;
-    
-    //limitsNeighboorsInteractions(link);   
 
-    std::cout << typeid(limitsNeighboorsInteractions(link)).name() << std::endl;
-    std::cout << typeid(limits).name() << std::endl;
+    get_limits(links);
 
     // for (int i = 0; i < limits.size(); ++i)
     // {
@@ -45,5 +43,5 @@ int main(int argc, char* argv[])
     //     Spin Up = Spin::up();
     //     spinUp.push_back(Up);
     // }
-    
+
 }
