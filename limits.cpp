@@ -1,14 +1,14 @@
 #include "limits.h"
 
 
-std::vector<int> get_limits (const std::vector<Link>& links)
+CSRMatrix get_limits (const std::vector<Link>& links)
 {
     int a{0};
     int n{0};
 
     std::vector<int> limits;
     std::vector<int> neighboors;
-    std::vector<int> interactions;
+    std::vector<float> interactions;
 
     limits.push_back(n);
     for (int i = 0; i < links.size();)
@@ -26,5 +26,5 @@ std::vector<int> get_limits (const std::vector<Link>& links)
         limits.push_back(n);
     }
 
-    return limits;
+    return CSRMatrix { limits, neighboors, interactions };
 }

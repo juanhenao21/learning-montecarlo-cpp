@@ -27,12 +27,12 @@ int main(int argc, char* argv[])
     Link link;
     std::vector<int> limits;
 
-    get_limits(links);
+    CSRMatrix csr = get_limits(links);
 
-    // for (int i = 0; i < limits.size(); ++i)
-    // {
-    //     cout << limits[i] << endl;
-    // }
+    for (int i = 0; i < csr.limits.size(); ++i)
+    {
+        std::cout << csr.limits[i] << std::endl;
+    }
 
     // Energy calculation
     // Spin sup = Spin::up();

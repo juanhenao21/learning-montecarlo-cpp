@@ -11,6 +11,6 @@ struct CSRMatrix {
     std::vector<float> exchanges;
 };
 
-std::vector<int> get_limits (std::vector<Link> link);
+CSRMatrix get_limits (const std::vector<Link>& link);
 
 #endif
