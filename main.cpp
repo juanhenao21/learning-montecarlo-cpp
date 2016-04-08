@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <typeinfo>
+#include <cstdlib>
 
 #include "types.h"
 #include "utilities.h"
@@ -13,7 +14,8 @@ int main(int argc, char* argv[])
 {
     if (argc < 2)
     {
-    	std::cout << "Remember to specify the data file" << std::endl;
+        std::cout << "Remember to specify the data file" << std::endl;
+        std::exit(1);
     }
 
     // Data reading
@@ -36,7 +38,7 @@ int main(int argc, char* argv[])
 
     // Energy calculation
     double Energy;
-	Energy = energy(atoms, csr);
+    Energy = energy(atoms, csr);
 
-	std::cout << "Energy = " << -Energy << std::endl;    
+    std::cout << "Energy = " << Energy << std::endl;
 }

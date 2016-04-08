@@ -5,16 +5,18 @@
 
 std::vector<Atom> atoms;
 
-double energy (std::vector<Atom>& atoms, CSRMatrix& csr)
+double energy (const std::vector<Atom>& atoms, const CSRMatrix& csr)
 {
-	Spin sup = Spin::up();
+    Spin sup = Spin::up();
     double Ener{0};
 
     for (int i = 0; i < atoms.size(); ++i)
     {
-    	for (int j = 0; j < csr.neighboors.size(); ++j)
-    	{
-    		Ener += csr.exchanges[j];
-    	}
+        for (int j = csr.limits[i] ; j < csr.limits[i+1]; ++j)
+        {
+            Ener -= csr.exchanges[j] * atoms[i].s * atoms[csr.neighboors[j]].s;
+        }
     }
+
+    return Ener;
 }

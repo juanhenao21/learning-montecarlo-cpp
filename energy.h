@@ -4,6 +4,6 @@
 #include "types.h"
 #include "limits.h"
 
-double energy (std::vector<Atom>& atoms, CSRMatrix& csr);
+double energy (const std::vector<Atom>& atoms, const CSRMatrix& csr);
 
 #endif

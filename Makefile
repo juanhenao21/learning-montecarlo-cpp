@@ -1,5 +1,7 @@
-main: limits.o types.o energy.o main.o
-	g++ -o main limits.o main.o types.o
+OBJECTS = limits.o types.o energy.o main.o
+
+main: ${OBJECTS}
+	g++ -o main ${OBJECTS}
 
 limits.o: limits.cpp limits.h
 	g++ -std=c++11 -c limits.cpp
