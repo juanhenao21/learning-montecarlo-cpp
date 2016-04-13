@@ -10,6 +10,7 @@
 #include "limits.h"
 #include "energy.h"
 
+
 int main(int argc, char* argv[])
 {
     if (argc < 2)
@@ -26,19 +27,25 @@ int main(int argc, char* argv[])
     atoms = al.atoms;
     links = al.links;
 
-    // Link and Atom ordering
-    std::sort(links.begin(), links.end(), CompLink());
+    // TODO: find a better place to do this
     std::sort(atoms.begin(), atoms.end(), CompAtom());
 
     // CSR (Compressed Sparse Row) representation
     // Neighboors, interactions and limits
     Link link;
-    
-    CSRMatrix csr = get_limits(links);
+
+    CSRMatrix csr = CSRMatrix::build_from_links(links);
+
+    std::vector<Spin> spins(al.natoms(), Spin::null());
+
+    RandomSpinGenerator randSpinGen;
+    std::vector<Spin> randSpin = std::generate(spins.begin(), spins.end(), randSpinGen.RandomSpinGenerator(2));
+
+    std::cout << spins << std::endl;
 
     // Energy calculation
-    double Energy;
-    Energy = energy(atoms, csr);
+    double energy;
+    energy = compute_energy(atoms, randSpin, csr);
 
-    std::cout << "Energy = " << Energy << std::endl;
+    std::cout << "Energy = " << energy << std::endl;
 }

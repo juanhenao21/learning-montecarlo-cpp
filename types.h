@@ -41,6 +41,8 @@ struct Spin
 
         static Spin up ();
         static Spin down ();
+        static Spin null ();
+        static Spin randSpin();
 
     private:
 
@@ -53,6 +55,8 @@ struct AtomsLinks
 
     std::vector<Atom> atoms;
     std::vector<Link> links;
+
+    int natoms () const;
 
     static AtomsLinks read_from_file (std::string filename);
 };

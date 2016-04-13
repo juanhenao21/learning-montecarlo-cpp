@@ -4,6 +4,6 @@
 #include "types.h"
 #include "limits.h"
 
-double energy (const std::vector<Atom>& atoms, const CSRMatrix& csr);
+double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& spins, const CSRMatrix& csr);
 
 #endif

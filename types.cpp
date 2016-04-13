@@ -3,7 +3,32 @@
 Spin::Spin(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
 Spin Spin::up () { return Spin(0, 0, 1); }
 Spin Spin::down () { return Spin(0, 0, -1); }
+Spin Spin::null () { return Spin(0, 0, 0); }
 
+struct RandomSpinGenerator
+{
+    int generator;
+
+    RandomSpinGenerator (int _case) : generator(_case) {}
+
+    Spin operator() () const {
+        switch (generator) {
+            case 0:
+                return Spin::up();
+            case 1:
+                return Spin::down();
+            case 2:
+                return Spin::randSpin();
+            default:
+                return Spin::null();
+        }
+    }
+};
+
+int AtomsLinks::natoms () const
+{
+    return atoms.size();
+}
 
 AtomsLinks AtomsLinks::read_from_file (std::string filename)
 {

@@ -1,4 +1,4 @@
-OBJECTS = limits.o types.o energy.o main.o
+OBJECTS = limits.o types.o energy.o randSpin.o main.o
 
 main: ${OBJECTS}
 	g++ -o main ${OBJECTS}
@@ -11,6 +11,9 @@ types.o: types.cpp types.h
 
 energy.o: energy.cpp energy.h
 	g++ -std=c++11 -c energy.cpp
+
+randSpin.o: randSpin.cpp
+	g++ -std=c++11 -c randSpin.cpp
 
 main.o: main.cpp utilities.h
 	g++ -std=c++11 -c main.cpp

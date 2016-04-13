@@ -1,10 +1,14 @@
 #include "limits.h"
 
 
-CSRMatrix get_limits (const std::vector<Link>& links)
+CSRMatrix CSRMatrix::build_from_links (const std::vector<Link>& _links)
 {
     int a{0};
     int n{0};
+
+    // Link and Atom ordering
+    std::vector<Link> links(_links);
+    std::sort(links.begin(), links.end(), CompLink());
 
     std::vector<int> limits;
     std::vector<int> neighboors;
