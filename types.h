@@ -61,6 +61,15 @@ struct AtomsLinks
     static AtomsLinks read_from_file (std::string filename);
 };
 
+struct SpinGenerator
+{
+    int generator;
+
+    SpinGenerator (int _case) : generator(_case) {}
+
+    Spin operator() ();
+};
+
 // ******************************************************************************
 // ******************************************************************************
 

@@ -1,3 +1,15 @@
+/**
+ * <h1> Data reading and Energy calculation </h1>
+ * This program reads a data file input, store the
+ * information in CSR (Compressed Sparse Row) representation
+ * and compute the energy of the system.
+ *
+ * @author Juan Camilo Henao Londoño
+ * @author Oscar David Arbelaez Echeverri
+ * @version 0.0
+ * @since 2016-04
+ */
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -10,7 +22,13 @@
 #include "limits.h"
 #include "energy.h"
 
-
+/*
+ * This is the main function of the program which reads,
+ * create the CSR representation and compute the energy
+ * of the system.
+ * @param argv[] Input data file.
+ * @return int This returns zero if everything went ok.
+ */
 int main(int argc, char* argv[])
 {
     if (argc < 2)
@@ -38,8 +56,8 @@ int main(int argc, char* argv[])
 
     std::vector<Spin> spins(al.natoms(), Spin::null());
 
-    RandomSpinGenerator randSpinGen;
-    std::vector<Spin> randSpin = std::generate(spins.begin(), spins.end(), randSpinGen.RandomSpinGenerator(2));
+    SpinGenerator randSpinGen;
+    std::vector<Spin> randSpin = std::generate(spins.begin(), spins.end(), randSpinGen.SpinGenerator(2));
 
     std::cout << spins << std::endl;
 

@@ -5,13 +5,7 @@ Spin Spin::up () { return Spin(0, 0, 1); }
 Spin Spin::down () { return Spin(0, 0, -1); }
 Spin Spin::null () { return Spin(0, 0, 0); }
 
-struct RandomSpinGenerator
-{
-    int generator;
-
-    RandomSpinGenerator (int _case) : generator(_case) {}
-
-    Spin operator() () const {
+Spin SpinGenerator::operator() () const {
         switch (generator) {
             case 0:
                 return Spin::up();
@@ -21,9 +15,8 @@ struct RandomSpinGenerator
                 return Spin::randSpin();
             default:
                 return Spin::null();
-        }
-    }
-};
+	}
+}
 
 int AtomsLinks::natoms () const
 {
