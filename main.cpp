@@ -56,14 +56,20 @@ int main(int argc, char* argv[])
 
     std::vector<Spin> spins(al.natoms(), Spin::null());
 
-    SpinGenerator randSpinGen;
-    std::vector<Spin> randSpin = std::generate(spins.begin(), spins.end(), randSpinGen.SpinGenerator(2));
+    SpinGenerator randSpinGen(2);
+    SpinGenerator upSpinGen(0);
 
-    std::cout << spins << std::endl;
+    std::cout << randSpinGen() << std::endl;
+    std::cout << randSpinGen() << std::endl;
+    std::cout << upSpinGen() << std::endl;
+
+    std::generate(spins.begin(), spins.end(), randSpinGen);
+
+    /* std::cout << spins << std::endl; */
 
     // Energy calculation
     double energy;
-    energy = compute_energy(atoms, randSpin, csr);
+    energy = compute_energy(atoms, spins, csr);
 
     std::cout << "Energy = " << energy << std::endl;
 }
