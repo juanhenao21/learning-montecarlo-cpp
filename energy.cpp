@@ -1,7 +1,8 @@
 #include <iostream>
 
-#include "types.h"
+#include "readatomslinks.h"
 #include "limits.h"
+#include "spin.h"
 
 std::vector<Atom> atoms;
 

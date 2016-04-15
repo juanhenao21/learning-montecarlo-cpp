@@ -13,14 +13,15 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <typeinfo>
 #include <cstdlib>
 
-#include "types.h"
+#include "readatomslinks.h"
 #include "utilities.h"
 #include "limits.h"
 #include "energy.h"
+#include "spin.h"
+#include "atoms.h"
 
 /*
  * This is the main function of the program which reads,
@@ -41,12 +42,9 @@ int main(int argc, char* argv[])
     std::vector<Atom> atoms;
     std::vector<Link> links;
 
-    AtomsLinks al = AtomsLinks::read_from_file(argv[1]);
+    ReadAtomsLinks al = ReadAtomsLinks::read_from_file(argv[1]);
     atoms = al.atoms;
     links = al.links;
-
-    // TODO: find a better place to do this
-    std::sort(atoms.begin(), atoms.end(), CompAtom());
 
     // CSR (Compressed Sparse Row) representation
     // Neighboors, interactions and limits
@@ -54,20 +52,15 @@ int main(int argc, char* argv[])
 
     CSRMatrix csr = CSRMatrix::build_from_links(links);
 
+    // Energy calculation
     std::vector<Spin> spins(al.natoms(), Spin::null());
 
     SpinGenerator randSpinGen(2);
     SpinGenerator upSpinGen(0);
 
-    std::cout << randSpinGen() << std::endl;
-    std::cout << randSpinGen() << std::endl;
-    std::cout << upSpinGen() << std::endl;
-
     std::generate(spins.begin(), spins.end(), randSpinGen);
 
-    /* std::cout << spins << std::endl; */
 
-    // Energy calculation
     double energy;
     energy = compute_energy(atoms, spins, csr);
 

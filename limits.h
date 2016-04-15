@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "types.h"
+#include "readatomslinks.h"
 #include "utilities.h"
 
 struct CSRMatrix {

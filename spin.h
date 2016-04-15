@@ -27,4 +27,8 @@ struct SpinGenerator
     Spin operator() () const;
 };
 
+float operator* (const Spin& a, const Spin& b);
+
+std::ostream& operator<< (std::ostream& os, Spin& s);
+
 #endif
