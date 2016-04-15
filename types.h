@@ -31,25 +31,6 @@ struct Link
 };
 
 
-struct Spin
-{
-    public:
-
-        Spin(float _x, float _y, float _z);
-
-        friend std::ostream& operator<< (std::ostream& os, const Spin& s);
-        friend float operator* (const Spin& a, const Spin& b);
-
-        static Spin up ();
-        static Spin down ();
-        static Spin null ();
-        static Spin randSpin();
-
-    private:
-
-        double x, y, z;
-
-};
 
 struct AtomsLinks
 {
@@ -62,14 +43,6 @@ struct AtomsLinks
     static AtomsLinks read_from_file (std::string filename);
 };
 
-struct SpinGenerator
-{
-    int generator;
-
-    SpinGenerator (int _case);
-
-    Spin operator() () const;
-};
 
 // ******************************************************************************
 // ******************************************************************************
