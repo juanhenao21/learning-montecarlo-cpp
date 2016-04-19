@@ -12,7 +12,7 @@
  * @return the os content
  */
     template<typename T>
-std::ostream& operator << (std::ostream& os, std::vector<T>& v)
+std::ostream& operator<< (std::ostream& os, std::vector<T>& v)
 {
     for (int i = 0; i < v.size(); ++i)
     {
