@@ -48,42 +48,65 @@ int main(int argc, char* argv[])
 
     // CSR (Compressed Sparse Row) representation
     // Neighboors, interactions and limits
-    Link link;
 
     CSRMatrix csr = CSRMatrix::build_from_links(links);
 
     // Energy calculation
-    std::vector<Spin> state(al.natoms(), Spin::null());
 
-    SpinGenerator randSpinGen(2);
-    SpinGenerator upSpinGen(0);
-
-    std::generate(state.begin(), state.end(), randSpinGen);
-
-    double energy;
-    energy = compute_energy(atoms, state, csr);
-    int natoms{al.natoms()};
-
-    std::cout << "Energy = " << energy << std::endl;
-
-    std::ofstream myfile;
-    myfile.open ("energias.dat");
-    myfile << energy << "\n";
     // Change of the spin with an random spin and energy calculation
-    for (int i = 0; i < natoms; ++i)
+
+    int TempMax{50};
+    for (int Temp = 0; Temp <= TempMax; Temp += 5)
     {
-        std::random_device rd;
-        std::mt19937 a(rd());
-        std::uniform_real_distribution<> dis(0, natoms);
-        int randval{int(dis(a))};
+        std::vector<Spin> state(al.natoms(), Spin::null());
 
-        Spin aleatorio = Spin::randSpin();
-        state[randval] = aleatorio;
+        SpinGenerator randSpinGen(2);
+        std::generate(state.begin(), state.end(), randSpinGen);
 
+        double energy;
         energy = compute_energy(atoms, state, csr);
-
-        std::cout << "Energy = " << energy << std::endl;
+        int natoms{al.natoms()};
+        std::ofstream myfile;
+        myfile.open ("metropolis" + std::to_string(Temp) + ".dat");
         myfile << energy << "\n";
+
+        long int changes{1000000};
+        double energyAfter, energyBefore{energy};
+        std::vector<Spin> stateBefore (state);
+        std::vector<Spin> stateAfter (state);
+        for (int i = 0; i < changes; ++i)
+        {
+            std::random_device rd;
+            std::mt19937 a(rd());
+            std::uniform_int_distribution<> dis(0, natoms-1);
+            int randval{dis(a)};
+
+            Spin aleatorio = Spin::randSpin();
+            stateAfter[randval] = aleatorio;
+
+            energyAfter = compute_energy(atoms, stateAfter, csr);
+
+            if (energyAfter < energyBefore)
+            {
+                myfile << energyAfter << "\n";
+                energyBefore = energyAfter;
+                stateBefore = stateAfter;
+            }
+            else
+                std::random_device rd;
+                std::mt19937 b(rd());
+                std::uniform_real_distribution<> met(0, 1);
+                if (exp(- (energyAfter - energyBefore)/Temp) >= met(b))
+                {
+                    myfile << energyAfter << "\n";
+                    energyBefore = energyAfter;
+                    stateBefore = stateAfter;
+                }
+                else
+                    myfile << energyBefore << "\n";
+        }
+
+        myfile.close();
     }
-    myfile.close();
+    
 }

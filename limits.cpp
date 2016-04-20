@@ -15,7 +15,7 @@ CSRMatrix CSRMatrix::build_from_links (const std::vector<Link>& _links)
     std::vector<float> exchanges;
 
     limits.push_back(n);
-    for (int i = 0; i < links.size();)
+    for (size_t i = 0; i < links.size();)
     {
         do
         {

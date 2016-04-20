@@ -22,7 +22,7 @@ double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& 
     /** Spin value of the atom and the neighbors. */
     double SpinValue;
 
-    for (int i = 0; i < atoms.size(); ++i)
+    for (size_t i = 0; i < atoms.size(); ++i)
     {
         for (int j = csr.limits[i] ; j < csr.limits[i+1]; ++j)
         {
