@@ -51,62 +51,8 @@ int main(int argc, char* argv[])
 
     CSRMatrix csr = CSRMatrix::build_from_links(links);
 
-    // Energy calculation
-
-    // Change of the spin with an random spin and energy calculation
-
+    // Metropolis Algorithm
     int TempMax{50};
-    for (int Temp = 0; Temp <= TempMax; Temp += 5)
-    {
-        std::vector<Spin> state(al.natoms(), Spin::null());
-
-        SpinGenerator randSpinGen(2);
-        std::generate(state.begin(), state.end(), randSpinGen);
-
-        double energy;
-        energy = compute_energy(atoms, state, csr);
-        int natoms{al.natoms()};
-        std::ofstream myfile;
-        myfile.open ("metropolis" + std::to_string(Temp) + ".dat");
-        myfile << energy << "\n";
-
-        long int changes{1000000};
-        double energyAfter, energyBefore{energy};
-        std::vector<Spin> stateBefore (state);
-        std::vector<Spin> stateAfter (state);
-        for (int i = 0; i < changes; ++i)
-        {
-            std::random_device rd;
-            std::mt19937 a(rd());
-            std::uniform_int_distribution<> dis(0, natoms-1);
-            int randval{dis(a)};
-
-            Spin aleatorio = Spin::randSpin();
-            stateAfter[randval] = aleatorio;
-
-            energyAfter = compute_energy(atoms, stateAfter, csr);
-
-            if (energyAfter < energyBefore)
-            {
-                myfile << energyAfter << "\n";
-                energyBefore = energyAfter;
-                stateBefore = stateAfter;
-            }
-            else
-                std::random_device rd;
-                std::mt19937 b(rd());
-                std::uniform_real_distribution<> met(0, 1);
-                if (exp(- (energyAfter - energyBefore)/Temp) >= met(b))
-                {
-                    myfile << energyAfter << "\n";
-                    energyBefore = energyAfter;
-                    stateBefore = stateAfter;
-                }
-                else
-                    myfile << energyBefore << "\n";
-        }
-
-        myfile.close();
-    }
-    
+    long int iterations{10000};
+    metropolis(TempMax, atoms, al, iterations, csr);
 }
