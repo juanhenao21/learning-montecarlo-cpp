@@ -14,6 +14,7 @@ struct Spin
         static Spin down ();
         static Spin null ();
         static Spin randSpin();
+        static Spin randSpin(std::mt19937& gen);
 
     private:
         double x, y, z;

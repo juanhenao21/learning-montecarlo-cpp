@@ -16,7 +16,8 @@ std::vector<Atom> atoms;
  * @param csr  compressed sparse row that contains the information of the atoms' neighbors
  * @return double ener the energy of the system.
  */
-double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& spins, const CSRMatrix& csr)
+double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& spins,
+                        const CSRMatrix& csr)
 {
     /** Energy of the system. */
     double ener{0};
@@ -45,8 +46,19 @@ double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& 
  * @param csr  compressed sparse row that contains the information of the atoms' neighbors
  * @return double ener the energy of the system.
  */
-void metropolis(int TempMax,const std::vector<Atom>& atoms, ReadAtomsLinks al, long int iterations, const CSRMatrix csr)
+void metropolis(
+    int TempMax,
+    const std::vector<Atom>& atoms,
+    const ReadAtomsLinks& al,
+    long int iterations,
+    const CSRMatrix& csr
+)
 {
+    int natoms{al.natoms()};
+    std::mt19937 sequence;
+    std::uniform_int_distribution<> dis(0, natoms-1);
+    std::uniform_real_distribution<> met(0, 1);
+
     for (int Temp = 0; Temp <= TempMax; Temp += 5)
     {
         std::vector<Spin> state(al.natoms(), Spin::null());
@@ -56,7 +68,6 @@ void metropolis(int TempMax,const std::vector<Atom>& atoms, ReadAtomsLinks al, l
 
         double energy;
         energy = compute_energy(atoms, state, csr);
-        int natoms{al.natoms()};
         std::ofstream myfile;
         myfile.open ("metropolis" + std::to_string(Temp) + ".dat");
         myfile << energy << "\n";
@@ -64,14 +75,13 @@ void metropolis(int TempMax,const std::vector<Atom>& atoms, ReadAtomsLinks al, l
         double energyAfter, energyBefore{energy};
         std::vector<Spin> stateBefore (state);
         std::vector<Spin> stateAfter (state);
+
+
         for (int i = 0; i < iterations; ++i)
         {
-            std::random_device rd;
-            std::mt19937 a(rd());
-            std::uniform_int_distribution<> dis(0, natoms-1);
-            int randval{dis(a)};
+            int randval{dis(sequence)};
 
-            Spin aleatorio = Spin::randSpin();
+            Spin aleatorio = Spin::randSpin(sequence);
             stateAfter[randval] = aleatorio;
 
             energyAfter = compute_energy(atoms, stateAfter, csr);
@@ -83,17 +93,18 @@ void metropolis(int TempMax,const std::vector<Atom>& atoms, ReadAtomsLinks al, l
                 stateBefore = stateAfter;
             }
             else
-                std::random_device rd;
-                std::mt19937 b(rd());
-                std::uniform_real_distribution<> met(0, 1);
-                if (exp(- (energyAfter - energyBefore)/Temp) >= met(b))
+            {
+                if (exp(- (energyAfter - energyBefore)/Temp) >= met(sequence))
                 {
                     myfile << energyAfter << "\n";
                     energyBefore = energyAfter;
                     stateBefore = stateAfter;
                 }
                 else
+                {
                     myfile << energyBefore << "\n";
+                }
+            }
         }
 
         myfile.close();

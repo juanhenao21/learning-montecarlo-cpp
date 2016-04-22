@@ -25,6 +25,24 @@ Spin Spin::randSpin ()
 
     return Spin(x, y, z);
 }
+Spin Spin::randSpin (std::mt19937& gen)
+{
+    std::uniform_real_distribution<> dis(-1, 1);
+
+    double x1, x2;
+    double x, y, z;
+
+    do
+    {
+        x1 = dis(gen);
+        x2 = dis(gen);
+        x = 2 * x1 * sqrt(1 - x1 * x1 - x2 * x2);
+        y = 2 * x2 * sqrt(1 - x1 * x1 - x2 * x2);
+        z = 1 - 2 * (x1 * x1 + x2 * x2);
+    } while (x1 * x1 + x2 * x2 >= 1);
+
+    return Spin(x, y, z);
+}
 
 
 SpinGenerator::SpinGenerator (int _case) : generator(_case) {}
