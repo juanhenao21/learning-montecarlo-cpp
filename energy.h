@@ -10,7 +10,7 @@ double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& 
 
 
 void metropolis(
-    int TempMax,
+    int tempMax,
     const std::vector<Atom>& atoms,
     const ReadAtomsLinks& al,
     long int iterations,

@@ -40,14 +40,21 @@ double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& 
 /**
  * Metropolis Algorithm.
  * <p>
- * Setting a .
- * @param atoms  vector with the spin values of the atom
- * @param spin  random spin orientation of the atom
+ * The Metropolis algorithm is used to accept or reject a change in the state
+ * of the sample. Randomly changing a spin direction, the energy of the system is
+ * computed. If the energy is lower than the energy before the change, the new state
+ * is accepted. If not, an exponential function is calculated and compared with a 
+ * random number between zero and one. If the exponential is greater than the random
+ * number the change is accepted. If not the initial state is preserved.
+ *
+ * @param tempMax  Maximum loop temperature
+ * @param atoms  Atom type vector with the characteristics of each atom in the sample
+ * @param al  ReadAtomLinks type that contain information about the number of atoms in the sample
+ * @param iterations  number of changes of spin direction in each temperature
  * @param csr  compressed sparse row that contains the information of the atoms' neighbors
- * @return double ener the energy of the system.
  */
 void metropolis(
-    int TempMax,
+    int tempMax,
     const std::vector<Atom>& atoms,
     const ReadAtomsLinks& al,
     long int iterations,
@@ -59,7 +66,7 @@ void metropolis(
     std::uniform_int_distribution<> dis(0, natoms-1);
     std::uniform_real_distribution<> met(0, 1);
 
-    for (int Temp = 0; Temp <= TempMax; Temp += 5)
+    for (int Temp = 0; Temp <= tempMax; Temp += 5)
     {
         std::vector<Spin> state(al.natoms(), Spin::null());
 
@@ -68,9 +75,9 @@ void metropolis(
 
         double energy;
         energy = compute_energy(atoms, state, csr);
-        std::ofstream myfile;
-        myfile.open ("metropolis" + std::to_string(Temp) + ".dat");
-        myfile << energy << "\n";
+        // std::ofstream myfile;
+        // myfile.open ("metropolis" + std::to_string(Temp) + ".dat");
+        // myfile << energy << "\n";
 
         double energyAfter, energyBefore{energy};
         std::vector<Spin> stateBefore (state);
@@ -88,7 +95,7 @@ void metropolis(
 
             if (energyAfter < energyBefore)
             {
-                myfile << energyAfter << "\n";
+                //myfile << energyAfter << "\n";
                 energyBefore = energyAfter;
                 stateBefore = stateAfter;
             }
@@ -96,17 +103,17 @@ void metropolis(
             {
                 if (exp(- (energyAfter - energyBefore)/Temp) >= met(sequence))
                 {
-                    myfile << energyAfter << "\n";
+                    //myfile << energyAfter << "\n";
                     energyBefore = energyAfter;
                     stateBefore = stateAfter;
                 }
                 else
                 {
-                    myfile << energyBefore << "\n";
+                    //myfile << energyBefore << "\n";
                 }
             }
         }
 
-        myfile.close();
+        //myfile.close();
     }
 }
