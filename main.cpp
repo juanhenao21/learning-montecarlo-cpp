@@ -1,84 +1,58 @@
+/**
+ * <h1> Data reading and Energy calculation </h1>
+ * This program reads a data file input, store the
+ * information in CSR (Compressed Sparse Row) representation
+ * and compute the energy of the system.
+ *
+ * @author Juan Camilo Henao Londoño
+ * @author Oscar David Arbelaez Echeverri
+ * @version 0.0
+ * @since 2016-04
+ */
+
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
+#include <typeinfo>
+#include <cstdlib>
 
-#include "types.h"
+#include "readatomslinks.h"
 #include "utilities.h"
+#include "limits.h"
+#include "energy.h"
+#include "spin.h"
+#include "atoms.h"
 
-using namespace std;
-
-
+/*
+ * This is the main function of the program which reads,
+ * create the CSR representation and compute the energy
+ * of the system.
+ * @param argv[] Input data file.
+ * @return int This returns zero if everything went ok.
+ */
 int main(int argc, char* argv[])
 {
+    if (argc < 2)
+    {
+        std::cout << "Remember to specify the data file" << std::endl;
+        std::exit(1);
+    }
+
+    // Data reading
     std::vector<Atom> atoms;
     std::vector<Link> links;
-    std::vector<int> limits;
-    std::vector<int> neighboors;
-    std::vector<int> interactions;
-    std::vector<Spin> spinUp;
 
-    AtomsLinks al = AtomsLinks::read_from_file(argv[1]);
+    ReadAtomsLinks al = ReadAtomsLinks::read_from_file(argv[1]);
     atoms = al.atoms;
     links = al.links;
 
-    // Link and Atom ordering
-    std::sort(links.begin(), links.end(), CompLink());
-    std::sort(atoms.begin(), atoms.end(), CompAtom());
+    // CSR (Compressed Sparse Row) representation
+    // Neighboors, interactions and limits
 
-    // for (int i = 0; i < atoms.size(); ++i)
-    // {
-    // 	cout << atoms[i].id << endl;
-    // }
+    CSRMatrix csr = CSRMatrix::build_from_links(links);
 
-    int a = 0;
-    int n = 0;
-
-    limits.push_back(n);
-    for (int i = 0; i < al.links.size();)
-    {
-        do
-        {
-            n++;
-            i++;
-            neighboors.push_back(links[i].target);
-            interactions.push_back(links[i].exchange);
-        } while (links[i].source == a);
-
-        a += 1;
-        limits.push_back(n);
-    }
-
-    for (int i = 0; i < limits.size(); ++i)
-    {
-        cout << limits[i] << endl;
-    }
-
-    // for (int i = 0; i < neighboors.size(); ++i)
-    // {
-    // 	cout << neighboors[i] << endl;
-    // 	cout << interactions[i] << endl;
-    // }
-
-    //std::cout << neighboors.size() << "\n" << interactions.size() << std::endl;
-
-    Spin sup = Spin::up();
-    Spin sdown = Spin::down();
-    //std::cout << sup << std::endl;
-    //std::cout << sup * sup << std::endl;
-    //std::cout << sup * sdown << std::endl;
-
-    for (int i = 0; i < al.links.size(); ++i)
-    {
-        Spin Up = Spin::up();
-        spinUp.push_back(Up);
-    }
-    //cout << spinUp << endl;
-
-    for (int i = 0; i < al.links.size(); i++)
-        for (int j = 0; j < limits.size(); j++)
-        {
-            /* code */
-        }
-
+    // Metropolis Algorithm
+    int TempMax{50};
+    long int iterations{10000};
+    metropolis(TempMax, atoms, al, iterations, csr);
 }
