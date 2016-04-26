@@ -60,12 +60,6 @@ Spin SpinGenerator::operator() () const {
     }
 }
 
-float operator* (const Spin& a, const Spin& b)
-{
-    return a.x * b.x + a.y * b.y + a.z * b.z;
-}
-
-
 std::ostream& operator<< (std::ostream& os, const Spin& s)
 {
     os << "(" << s.x << ", " << s.y << ", " << s.z << ")";

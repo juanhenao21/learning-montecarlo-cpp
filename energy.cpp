@@ -86,10 +86,10 @@ void metropolis(
 
         for (int i = 0; i < iterations; ++i)
         {
-            int randval{dis(sequence)};
+            int site{dis(sequence)};
 
             Spin aleatorio = Spin::randSpin(sequence);
-            stateAfter[randval] = aleatorio;
+            stateAfter[site] = aleatorio;
 
             energyAfter = compute_energy(atoms, stateAfter, csr);
 
@@ -97,7 +97,7 @@ void metropolis(
             {
                 //myfile << energyAfter << "\n";
                 energyBefore = energyAfter;
-                stateBefore = stateAfter;
+                stateBefore[site] = stateAfter[site];
             }
             else
             {
@@ -105,11 +105,12 @@ void metropolis(
                 {
                     //myfile << energyAfter << "\n";
                     energyBefore = energyAfter;
-                    stateBefore = stateAfter;
+                    stateBefore[site] = stateAfter[site];
                 }
                 else
                 {
                     //myfile << energyBefore << "\n";
+                    stateAfter[site] = stateBefore[site];
                 }
             }
         }

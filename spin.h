@@ -28,7 +28,10 @@ struct SpinGenerator
     Spin operator() () const;
 };
 
-float operator* (const Spin& a, const Spin& b);
+inline float operator* (const Spin& a, const Spin& b)
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
 
 std::ostream& operator<< (std::ostream& os, const Spin& s);
 
