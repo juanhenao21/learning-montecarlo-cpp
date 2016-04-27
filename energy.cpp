@@ -70,13 +70,13 @@ void metropolis(
     {
         std::vector<Spin> state(al.natoms(), Spin::null());
 
-        SpinGenerator randSpinGen(2);
+        SpinGenerator randSpinGen(3);
         std::generate(state.begin(), state.end(), randSpinGen);
 
         double energy;
         energy = compute_energy(atoms, state, csr);
         // std::ofstream myfile;
-        // myfile.open ("metropolis" + std::to_string(Temp) + ".dat");
+        // myfile.open ("Experiments/metropolis" + std::to_string(Temp) + ".dat");
         // myfile << energy << "\n";
 
         double energyAfter, energyBefore{energy};
