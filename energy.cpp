@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "readatomslinks.h"
 #include "limits.h"
 #include "spin.h"
@@ -10,7 +8,8 @@ std::vector<Atom> atoms;
 /**
  * Computes the energy of the system.
  * <p>
- * Using the atom, the spin and the neighbors, it is computed the energy of the system.
+ * Using the atom, the spin and the neighbors, it is computed the energy of the
+ * system.
  * @param atoms  vector with the spin values of the atom
  * @param spin  random spin orientation of the atom
  * @param csr  compressed sparse row that contains the information of the atoms' neighbors
@@ -41,11 +40,12 @@ double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& 
  * Metropolis Algorithm.
  * <p>
  * The Metropolis algorithm is used to accept or reject a change in the state
- * of the sample. Randomly changing a spin direction, the energy of the system is
- * computed. If the energy is lower than the energy before the change, the new state
- * is accepted. If not, an exponential function is calculated and compared with a 
- * random number between zero and one. If the exponential is greater than the random
- * number the change is accepted. If not the initial state is preserved.
+ * of the sample. Randomly changing a spin direction, the energy of the system
+ * is computed. If the energy is lower than the energy before the change, the
+ * new state is accepted. If not, an exponential function is calculated and
+ * compared with a random number between zero and one. If the exponential is
+ * greater than the random number the change is accepted. If not the initial
+ * state is preserved.
  *
  * @param tempMax  Maximum loop temperature
  * @param atoms  Atom type vector with the characteristics of each atom in the sample
@@ -101,7 +101,7 @@ void metropolis(
             }
             else
             {
-                if (exp(- (energyAfter - energyBefore)/Temp) >= met(sequence))
+                if (std::exp(- (energyAfter - energyBefore)/Temp) >= met(sequence))
                 {
                     //myfile << energyAfter << "\n";
                     energyBefore = energyAfter;
