@@ -55,12 +55,18 @@ Spin SpinGenerator::operator() () const {
                 return Spin::down();
             case 2:
                 return Spin::randSpin();
-            // case 3:
-            //     return Spin::randSpin(std::mt19937& gen);
+            //case 3:
+            //    return Spin::randSpin(std::mt19937& gen);
             default:
                 return Spin::null();
     }
 }
+
+RandomSpinGenerator::RandomSpinGenerator(std::mt19937& _gen) : gen(_gen) {}
+Spin RandomSpinGenerator::operator() () {
+    return Spin::randSpin(gen);
+}
+
 
 std::ostream& operator<< (std::ostream& os, const Spin& s)
 {

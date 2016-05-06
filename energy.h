@@ -9,9 +9,19 @@
 #include "readatomslinks.h"
 #include "spin.h"
 
-double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& spins,
-                        const CSRMatrix& csr);
+double compute_energy (
+    const std::vector<Atom>& atoms,
+    const std::vector<Spin>& spins,
+    const CSRMatrix& csr
+);
 
+double delta_energy (
+    const std::vector<Atom>& atoms,
+    const std::vector<Spin>& spins,
+    const CSRMatrix& csr,
+    const Spin& newSpin,
+    int pos
+);
 
 void metropolis(
     int tempMax,
@@ -21,5 +31,12 @@ void metropolis(
     const CSRMatrix& csr
 );
 
+void metropolisdiff(
+    int tempMax,
+    const std::vector<Atom>& atoms,
+    const ReadAtomsLinks& al,
+    long int iterations,
+    const CSRMatrix& csr
+);
 
 #endif

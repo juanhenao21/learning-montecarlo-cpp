@@ -15,26 +15,48 @@ std::vector<Atom> atoms;
  * @param csr  compressed sparse row that contains the information of the atoms' neighbors
  * @return double ener the energy of the system.
  */
-double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& spins,
-                        const CSRMatrix& csr)
+double compute_energy (
+    const std::vector<Atom>& atoms,
+    const std::vector<Spin>& spins,
+    const CSRMatrix& csr
+)
 {
     /** Energy of the system. */
     double ener{0};
     /** Spin value of the atom and the neighbors. */
-    double SpinValue;
+    double spinValue;
 
     for (size_t i = 0; i < atoms.size(); ++i)
     {
         for (int j = csr.limits[i] ; j < csr.limits[i+1]; ++j)
         {
-            SpinValue = spins[i] * spins[csr.neighboors[j]];
-            ener -= csr.exchanges[j] * atoms[i].s * atoms[csr.neighboors[j]].s * SpinValue;
+            spinValue = spins[i] * spins[csr.neighboors[j]];
+            ener -= csr.exchanges[j] * atoms[i].s * atoms[csr.neighboors[j]].s * spinValue;
         }
     }
 
     return ener;
 }
 
+double delta_energy (
+    const std::vector<Atom>& atoms,
+    const std::vector<Spin>& spins,
+    const CSRMatrix& csr,
+    const Spin& newSpin,
+    int pos
+)
+{
+    double energyDiff{0};
+    Spin spinDiff = newSpin - spins[pos];
+
+    for (int i = csr.limits[pos] ; i < csr.limits[pos+1]; ++i)
+    {
+        double spinDot = spinDiff * spins[csr.neighboors[i]];
+        energyDiff -= csr.exchanges[i] * atoms[pos].s * atoms[csr.neighboors[i]].s * spinDot;
+    }
+
+    return energyDiff;
+}
 
 /**
  * Metropolis Algorithm.
@@ -73,44 +95,101 @@ void metropolis(
         SpinGenerator randSpinGen(3);
         std::generate(state.begin(), state.end(), randSpinGen);
 
-        double energy;
-        energy = compute_energy(atoms, state, csr);
+        double energy = compute_energy(atoms, state, csr);
         // std::ofstream myfile;
         // myfile.open ("Experiments/metropolis" + std::to_string(Temp) + ".dat");
         // myfile << energy << "\n";
 
-        double energyAfter, energyBefore{energy};
-        std::vector<Spin> stateBefore (state);
-        std::vector<Spin> stateAfter (state);
-
+        double energyBefore, energyAfter;
+        Spin spinBefore = Spin::null();
 
         for (int i = 0; i < iterations; ++i)
         {
             int site{dis(sequence)};
 
-            Spin aleatorio = Spin::randSpin(sequence);
-            stateAfter[site] = aleatorio;
+            energyBefore = compute_energy(atoms, state, csr);
+            spinBefore = state[site];
 
-            energyAfter = compute_energy(atoms, stateAfter, csr);
+            Spin aleatorio = Spin::randSpin(sequence);
+            state[site] = aleatorio;
+
+            energyAfter = compute_energy(atoms, state, csr);
 
             if (energyAfter < energyBefore)
             {
                 //myfile << energyAfter << "\n";
-                energyBefore = energyAfter;
-                stateBefore[site] = stateAfter[site];
             }
             else
             {
                 if (std::exp(- (energyAfter - energyBefore)/Temp) >= met(sequence))
                 {
                     //myfile << energyAfter << "\n";
-                    energyBefore = energyAfter;
-                    stateBefore[site] = stateAfter[site];
                 }
                 else
                 {
                     //myfile << energyBefore << "\n";
-                    stateAfter[site] = stateBefore[site];
+                    state[site] = spinBefore;
+                }
+            }
+        }
+
+        //myfile.close();
+    }
+}
+
+void metropolisdiff(
+    int tempMax,
+    const std::vector<Atom>& atoms,
+    const ReadAtomsLinks& al,
+    long int iterations,
+    const CSRMatrix& csr
+)
+{
+    int natoms{al.natoms()};
+    std::mt19937 sequence;
+    std::uniform_int_distribution<> dis(0, natoms-1);
+    std::uniform_real_distribution<> met(0, 1);
+    
+    RandomSpinGenerator randSpinGen(sequence);
+
+    for (int Temp = 0; Temp <= tempMax; Temp += 5)
+    {
+        std::vector<Spin> state(al.natoms(), Spin::null());
+
+        std::generate(state.begin(), state.end(), randSpinGen);
+
+        double energy = compute_energy(atoms, state, csr);
+        // std::ofstream myfile;
+        // myfile.open ("Experiments/metropolis" + std::to_string(Temp) + ".dat");
+        // myfile << energy << "\n";
+
+        for (int i = 0; i < iterations; ++i)
+        {
+            int site{dis(sequence)};
+
+            Spin aleatorio = Spin::randSpin(sequence);
+            // state[site] = aleatorio;
+
+            double energyDiff = delta_energy(atoms, state, csr, aleatorio, site);
+
+            if (energyDiff < 0)
+            {
+                state[site] = aleatorio;
+                energy += energyDiff;
+                //myfile << compute_energy(atoms, state, csr) << "\n";
+            }
+            else
+            {
+                if (std::exp(- (energyDiff)/Temp) >= met(sequence))
+                {
+                    state[site] = aleatorio;
+                    energy += energyDiff;
+                    //myfile << compute_energy(atoms, state, csr) << "\n";
+                }
+                else
+                {
+                    //myfile << compute_energy(atoms, state, csr) << "\n";
+
                 }
             }
         }
