@@ -54,6 +54,6 @@ int main(int argc, char* argv[])
     // Metropolis Algorithm
     int TempMax{50};
     long int iterations{10000};
-    //metropolis(TempMax, atoms, al, iterations, csr);
-    metropolisdiff(TempMax, atoms, al, iterations, csr);
+    metropolis(TempMax, atoms, al, iterations, csr);
+    //metropolisdiff(TempMax, atoms, al, iterations, csr);
 }
