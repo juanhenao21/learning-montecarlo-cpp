@@ -18,3 +18,15 @@ std::ostream& operator<< (std::ostream& os, Atom& a)
     os << "Atom: " << a.id << " of type: " << a.type;
     return os;
 }
+
+std::istream& operator>> (std::istream& is, Atom& atom)
+{
+    is  >> atom.id
+        >> atom.x >> atom.y >> atom.z
+        >> atom.s
+        >> atom.kx >> atom.ky >> atom.kz
+        >> atom.k
+        >> atom.type;
+
+    return is;
+}

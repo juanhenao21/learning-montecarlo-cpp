@@ -31,12 +31,4 @@ void metropolis(
     const CSRMatrix& csr
 );
 
-void metropolisdiff(
-    int tempMax,
-    const std::vector<Atom>& atoms,
-    const ReadAtomsLinks& al,
-    long int iterations,
-    const CSRMatrix& csr
-);
-
 #endif
