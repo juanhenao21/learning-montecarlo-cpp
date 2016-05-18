@@ -53,6 +53,6 @@ int main(int argc, char* argv[])
 
     // Metropolis Algorithm
     int TempMax{50};
-    long int iterations{1000000};
+    long int iterations{100000000};
     metropolis(TempMax, atoms, al, iterations, csr);
 }

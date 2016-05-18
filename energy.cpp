@@ -97,7 +97,14 @@ void metropolis(
     {
 
         std::ofstream myfile;
-        myfile.open ("Experiments/metropolis" + std::to_string(Temp) + ".dat");
+
+        if (Temp < 10)
+        {
+            myfile.open ("Experiments/metropolis0" + std::to_string(Temp) + ".dat");
+        }
+        else
+            myfile.open ("Experiments/metropolis" + std::to_string(Temp) + ".dat");
+        
         myfile << energy << "\n";
 
         for (int i = 0; i < iterations; ++i)
@@ -125,11 +132,11 @@ void metropolis(
                 else
                 {
                     myfile << energy << "\n";
-
                 }
             }
         }
 
         myfile.close();
+
     }
 }
