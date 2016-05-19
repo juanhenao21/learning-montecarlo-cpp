@@ -77,6 +77,7 @@ double delta_energy (
  */
 void metropolis(
     int tempMax,
+    int tempStep,
     const std::vector<Atom>& atoms,
     const ReadAtomsLinks& al,
     long int iterations,
@@ -93,20 +94,15 @@ void metropolis(
     std::generate(state.begin(), state.end(), randSpinGen);
     double energy = compute_energy(atoms, state, csr);
 
-    for (int Temp = 0; Temp <= tempMax; Temp += 5)
+    std::cout << tempMax << tempStep << iterations << std::endl;
+
+    std::ofstream myfile;
+    myfile.open ("Experiments/energias.dat");
+
+    for (int Temp = tempMax; Temp >= 0; Temp -= tempStep)
     {
-
-        std::ofstream myfile;
-
-        if (Temp < 10)
-        {
-            myfile.open ("Experiments/metropolis0" + std::to_string(Temp) + ".dat");
-        }
-        else
-            myfile.open ("Experiments/metropolis" + std::to_string(Temp) + ".dat");
-        
         myfile << energy << "\n";
-
+        std::cout << "Temperature = " << Temp << std::endl;
         for (int i = 0; i < iterations; ++i)
         {
             int site{dis(sequence)};

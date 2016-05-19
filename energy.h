@@ -25,6 +25,7 @@ double delta_energy (
 
 void metropolis(
     int tempMax,
+    int tempStep,
     const std::vector<Atom>& atoms,
     const ReadAtomsLinks& al,
     long int iterations,
