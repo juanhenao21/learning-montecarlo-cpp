@@ -94,15 +94,14 @@ void metropolis(
     std::generate(state.begin(), state.end(), randSpinGen);
     double energy = compute_energy(atoms, state, csr);
 
-    std::cout << tempMax << tempStep << iterations << std::endl;
-
-    std::ofstream myfile;
-    myfile.open ("Experiments/energias.dat");
+    /*std::ofstream myfile;
+    myfile.open ("Experiments/energias.dat");*/
 
     for (int Temp = tempMax; Temp >= 0; Temp -= tempStep)
     {
-        myfile << energy << "\n";
-        std::cout << "Temperature = " << Temp << std::endl;
+        //myfile << energy << "\n";
+        //std::cout << "Temperature = " << Temp << std::endl;
+
         for (int i = 0; i < iterations; ++i)
         {
             int site{dis(sequence)};
@@ -115,7 +114,7 @@ void metropolis(
             {
                 state[site] = aleatorio;
                 energy += energyDiff;
-                myfile << energy << "\n";
+                //myfile << energy << "\n";
             }
             else
             {
@@ -123,16 +122,16 @@ void metropolis(
                 {
                     state[site] = aleatorio;
                     energy += energyDiff;
-                    myfile << energy << "\n";
+                    //myfile << energy << "\n";
                 }
                 else
                 {
-                    myfile << energy << "\n";
+                    //myfile << energy << "\n";
                 }
             }
         }
 
-        myfile.close();
+        //myfile.close();
 
     }
 }
