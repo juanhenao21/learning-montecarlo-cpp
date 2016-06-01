@@ -2,7 +2,7 @@
 #define UTILITIES_H_
 
 /**
- * Operator definition. 
+ * Operator definition.
  * << operator std::vector of structures.
  * This define the operation of a std::vector of structures with <<
  * operator. The operator prints the following representation
@@ -24,14 +24,14 @@ std::ostream& operator<< (std::ostream& os, std::vector<T>& v)
 /**
  * <h1> Compare Link source </h>
  * The CompLink struct compares two sources from two Link structures
- * 
+ *
  */
 struct CompLink
 {
     /**
      * This method is used to compare the value between two struct members
      * of the tipe Link.
-     * 
+     *
      * @param a  this is the first parameter to operator method
      * @param b  this is the second parameter to operator method
      * @return  bool this returns True if a < b, and False if b > a
@@ -45,14 +45,14 @@ struct CompLink
 /**
  * <h1> Compare Atom id </h>
  * The CompAtom struct compares two ids from two Atom structures
- * 
+ *
  */
 struct CompAtom
 {
     /**
      * This method is used to compare the value between two struct members
      * of the tipe Atom.
-     * 
+     *
      * @param a  this is the first parameter to operator method
      * @param b  this is the second parameter to operator method
      * @return  bool this returns True if a < b, and False if b > a

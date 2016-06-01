@@ -1,5 +1,5 @@
 OBJECTS = limits.o readatomslinks.o energy.o spin.o atoms.o links.o main.o
-PROFILE = -pg -g3
+PROFILE = -O3
 
 main: ${OBJECTS}
 	g++ ${PROFILE} -o main ${OBJECTS}

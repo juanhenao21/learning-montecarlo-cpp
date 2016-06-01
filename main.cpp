@@ -32,9 +32,9 @@
  */
 int main(int argc, char* argv[])
 {
-    if (argc < 2)
+    if (argc < 5)
     {
-        std::cout << "Remember to specify the data file" << std::endl;
+        std::cout << "Remember to specify -> data file - Max Temp - Step Temp - Num Iterations" << std::endl;
         std::exit(1);
     }
 
@@ -52,7 +52,8 @@ int main(int argc, char* argv[])
     CSRMatrix csr = CSRMatrix::build_from_links(links);
 
     // Metropolis Algorithm
-    int TempMax{50};
-    long int iterations{10000};
-    metropolis(TempMax, atoms, al, iterations, csr);
+    int tempMax{atoi(argv[2])};
+    int tempStep{atoi(argv[3])};
+    long int iterations{atoi(argv[4])};
+    metropolis(tempMax, tempStep, atoms, al, iterations, csr);
 }

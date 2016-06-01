@@ -1,21 +1,35 @@
 #ifndef ENERGY_H_
-#define ENERGY_H_ 
+#define ENERGY_H_
 
-#include "readatomslinks.h"
+#include <cmath>
+#include <fstream>
+#include <iostream>
+
 #include "limits.h"
+#include "readatomslinks.h"
 #include "spin.h"
 
-double compute_energy (const std::vector<Atom>& atoms, const std::vector<Spin>& spins,
-                        const CSRMatrix& csr);
+double compute_energy (
+    const std::vector<Atom>& atoms,
+    const std::vector<Spin>& spins,
+    const CSRMatrix& csr
+);
 
+double delta_energy (
+    const std::vector<Atom>& atoms,
+    const std::vector<Spin>& spins,
+    const CSRMatrix& csr,
+    const Spin& newSpin,
+    int pos
+);
 
 void metropolis(
     int tempMax,
+    int tempStep,
     const std::vector<Atom>& atoms,
     const ReadAtomsLinks& al,
     long int iterations,
     const CSRMatrix& csr
 );
-
 
 #endif

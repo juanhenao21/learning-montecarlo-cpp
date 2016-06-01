@@ -32,12 +32,7 @@ ReadAtomsLinks ReadAtomsLinks::read_from_file (std::string filename)
         for (int i=0; i< natoms; i++)
         {
             Atom atom;
-            file_ >> atom.id
-                >> atom.x >> atom.y >> atom.z
-                >> atom.s
-                >> atom.kx >> atom.ky >> atom.kz
-                >> atom.k
-                >> atom.type;
+            file_ >> atom;
             atoms.push_back(atom);
         }
 
