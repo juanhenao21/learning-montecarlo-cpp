@@ -3,7 +3,7 @@
 #include "spin.h"
 #include "energy.h"
 
-std::vector<Atom> atoms;
+//std::vector<Atom> atoms;
 
 /**
  * Computes the energy of the system.
