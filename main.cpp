@@ -19,7 +19,10 @@
 #include "readatomslinks.h"
 #include "utilities.h"
 #include "limits.h"
+ #include "temploop.h"
+#include "metropolis.h"
 #include "energy.h"
+#include "magnetization.h"
 #include "spin.h"
 #include "atoms.h"
 
@@ -55,5 +58,5 @@ int main(int argc, char* argv[])
     int tempMax{atoi(argv[2])};
     int tempStep{atoi(argv[3])};
     long int iterations{atoi(argv[4])};
-    metropolis(tempMax, tempStep, atoms, al, iterations, csr);
+    temploop(tempMax, tempStep, atoms, al, iterations, csr);
 }

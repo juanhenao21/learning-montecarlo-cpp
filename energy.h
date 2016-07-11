@@ -23,13 +23,4 @@ double delta_energy (
     int pos
 );
 
-void metropolis(
-    int tempMax,
-    int tempStep,
-    const std::vector<Atom>& atoms,
-    const ReadAtomsLinks& al,
-    long int iterations,
-    const CSRMatrix& csr
-);
-
 #endif

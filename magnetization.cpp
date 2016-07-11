@@ -13,7 +13,7 @@ double compute_magnetization (
 
 	for (size_t i = 0; i < spins.size(); ++i)
     {
-        magnetization += spins[i];
+        //magnetization += spins[i];
     }
 
     return magnetization;
