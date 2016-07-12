@@ -4,17 +4,21 @@
 #include "magnetization.h"
 
 double compute_magnetization (
-	const std::vector<Atom>& atoms,
-    const std::vector<Spin>& spins,
-    const CSRMatrix& csr
+	const std::vector<Spin>& spins
 )
 {
-	double magnetization{0};
+	float magnetization{0};
+
+	Spin sumMag = Spin::null();
 
 	for (size_t i = 0; i < spins.size(); ++i)
     {
-        //magnetization += spins[i];
+        sumMag = sumMag + spins[i];
     }
+
+    magnetization = Spin::normSpin(sumMag/spins.size());
+
+    std::cout << magnetization << std::endl;
 
     return magnetization;
 }

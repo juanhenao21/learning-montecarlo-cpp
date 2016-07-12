@@ -2,6 +2,7 @@
 #include "limits.h"
 #include "spin.h"
 #include "energy.h"
+#include "magnetization.h"
 #include "metropolis.h"
 
 /**
@@ -39,6 +40,7 @@ void metropolis(
     std::generate(state.begin(), state.end(), randSpinGen);
     
     double energy = compute_energy(atoms, state, csr);
+    //double magnetization = compute_magnetization(state);
     
 
     std::ofstream Enerfile;
@@ -56,6 +58,8 @@ void metropolis(
         Spin aleatorio = Spin::randSpin(sequence);
 
         double energyDiff = delta_energy(atoms, state, csr, aleatorio, site);
+
+        compute_magnetization(state);
 
         if (energyDiff < 0)
         {

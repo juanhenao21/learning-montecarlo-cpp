@@ -10,9 +10,7 @@
 #include "spin.h"
 
 double compute_magnetization (
-	const std::vector<Atom>& atoms,
-    const std::vector<Spin>& spins,
-    const CSRMatrix& csr
+	const std::vector<Spin>& spins
 );
 
 #endif

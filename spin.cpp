@@ -45,6 +45,11 @@ Spin Spin::randSpin (std::mt19937& gen)
     return Spin(x, y, z);
 }
 
+float Spin::normSpin (const Spin& s) 
+{ 
+    return sqrt(s.x*s.x + s.y*s.y + s.z*s.z); 
+}
+
 SpinGenerator::SpinGenerator (int _case) : generator(_case) {}
 
 Spin SpinGenerator::operator() () const {
