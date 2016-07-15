@@ -18,7 +18,5 @@ double compute_magnetization (
 
     magnetization = Spin::normSpin(sumMag/spins.size());
 
-    std::cout << magnetization << std::endl;
-
     return magnetization;
 }

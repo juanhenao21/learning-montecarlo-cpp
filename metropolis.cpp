@@ -40,15 +40,17 @@ void metropolis(
     std::generate(state.begin(), state.end(), randSpinGen);
     
     double energy = compute_energy(atoms, state, csr);
-    //double magnetization = compute_magnetization(state);
+    double magnetization = compute_magnetization(state);
     
-
+    
     std::ofstream Enerfile;
     std::ofstream Magfile;
     Enerfile.open ("Experiments/energiasWOW.dat");
     Magfile.open ("Experiments/magnetizacionWOW.dat");
 
     Enerfile << energy << "\n";
+    Magfile << magnetization << "\n";
+
     std::cout << "Temperature = " << temp << std::endl;
 
     for (int i = 0; i < iterations; ++i)
@@ -59,13 +61,13 @@ void metropolis(
 
         double energyDiff = delta_energy(atoms, state, csr, aleatorio, site);
 
-        compute_magnetization(state);
-
         if (energyDiff < 0)
         {
             state[site] = aleatorio;
             energy += energyDiff;
             Enerfile << energy << "\n";
+            magnetization = compute_magnetization(state);
+            Magfile << magnetization << "\n";
         }
         else
         {
@@ -74,14 +76,23 @@ void metropolis(
                 state[site] = aleatorio;
                 energy += energyDiff;
                 Enerfile << energy << "\n";
+                magnetization = compute_magnetization(state);
+                Magfile << magnetization << "\n";
             }
             else
             {
                 Enerfile << energy << "\n";
+                magnetization = compute_magnetization(state);
+                Magfile << magnetization << "\n";
             }
         }
-    
-    Enerfile.close();
 
     }
+    
+    std::ofstream results;
+    results.open ("Experiments/results.dat", std::ios_base::app);
+    results << temp << " " << energy << " " << magnetization << "\n";
+    Enerfile.close();
+    Magfile.close();
+    results.close();
 }

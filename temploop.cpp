@@ -15,8 +15,7 @@ void temploop(
 )
 {
 	for (int Temp = tempMax; Temp >= 0; Temp -= tempStep)
-    {
+    {        
     	metropolis(Temp, atoms, al, iterations, csr);
-        std::cout << "iterations = " << iterations << std::endl;
     }
 }
